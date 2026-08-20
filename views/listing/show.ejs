@@ -1,0 +1,57 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+    
+
+
+ <div class="card show-card">
+    <img
+        src="<%= one_listing.image.url %>"
+        class="card-img-top show-card-img"
+        alt="<%= one_listing.image.filename %>" >
+
+    <div class="card-body show-card-content">
+        <h3 class="card-title mb-3"><%= one_listing.title %></h3>
+
+        <p class="card-text show-desc">
+            <%= one_listing.description %>
+        </p>
+
+        <hr>
+
+        <p class="card-text">
+            <strong>Price:</strong>
+            <% if (one_listing.price != null) { %>
+            &#8377; <%= one_listing.price.toLocaleString("en-IN") %>
+            <% } else { %>
+             Price not available
+            <% } %>
+            
+        </p>
+
+        <p class="card-text">
+            <strong>Location:</strong>
+            <%= one_listing.location %>, <%= one_listing.country %>
+        </p>
+
+        <% if(access) {%>
+        <div class="show-btn-group">
+            <a href="/listings/<%= one_listing._id %>/edit" class="btn edit-btn">
+                Update
+            </a>
+
+            <form action="/listings/<%= one_listing._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-dark">
+                    Delete
+                </button>
+            </form>
+        </div>
+        <% } %>
+    </div>
+</div>
+</body>
+</html>
+
+
+        
+       
+           

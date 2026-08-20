@@ -44,13 +44,7 @@ app.use(session(
     }
 ));
 
-app.use((req,res,next)=>
-{
-    res.locals.success=req.flash("success");
-    res.locals.error=req.flash("error");
-    res.locals.current_user=req.user;
-    next();
-});
+
 
 
 //configuring passport
@@ -62,7 +56,13 @@ passport.use(new localStratergy(user.authenticate()));
 passport.serializeUser(user.serializeUser());
 passport.deserializeUser(user.deserializeUser());
 
-
+app.use((req,res,next)=>
+{
+    res.locals.success=req.flash("success");
+    res.locals.error=req.flash("error");
+    res.locals.current_user=req.user;
+    next();
+});
 
 //connecting with mongodb 
 const mongoose=require("mongoose");

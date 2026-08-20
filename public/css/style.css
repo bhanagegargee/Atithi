@@ -1,0 +1,188 @@
+body{
+    /* font-family:'Times New Roman', Times, serif !important ; */
+    font-family:  serif !important;
+  font-optical-sizing: auto !important;
+  font-weight: 20rem !important;
+  font-style: normal !important;
+  
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container{
+    flex: 1;
+}
+
+/*navbar*/
+
+.fa-hire-a-helper{
+    color: brown;
+}
+
+.navbar{
+    background: white;
+  
+}
+
+/* index page*/
+
+.card{
+    border: none !important;
+    margin-bottom: 2rem ;
+}
+
+.card-img-top{
+    border-radius: 8% !important;
+     width: 100% !important;
+}
+
+.card-body{
+    padding: 0%   !important;
+}
+
+.listing-link{
+    text-decoration: none;
+    color: black;
+    
+}
+
+.listing-link:hover{
+    color: gray;
+}
+
+/* edit and add new page */
+.add-btn{
+    background-color: brown !important;
+    color: white    !important;
+   
+}
+
+.edit-btn{
+background-color: brown !important  ;
+color: white !important;
+}
+
+label {
+ 
+  color: black !important;
+}
+
+/* Show Listing Card */
+
+.show-card{
+    max-width: 750px;
+    margin: 2rem auto;
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    padding: 2%;
+}
+
+.show-card-img{
+    height: 420px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.show-card-content{
+    padding: 1.8rem;
+}
+
+.show-card-content h3{
+    font-weight: 700;
+}
+
+.show-desc{
+    color: #555;
+    line-height: 1.7;
+}
+
+.show-btn-group{
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.8rem;
+}
+
+.show-btn-group form{
+    margin: 0;
+}
+
+
+/* signup page */
+ .signup-container {
+            background: #f5f7fb;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signup-card {
+            max-width: 500px;
+            width: 100%;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+        }
+
+        .signup-card .card-body {
+            padding: 40px;
+        }
+
+        .form-control {
+            padding: 12px 14px;
+            border-radius: 8px;
+        }
+
+        .btn-signup {
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .google-btn {
+            border-color: 1px solid black;
+            background: #fff;
+            color: #333;
+            padding: 11px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .google-btn:hover {
+            background: #f8f8f8;
+        }
+
+        .google-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #888;
+            margin: 25px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .divider span {
+            padding: 0 12px;
+            font-size: 14px;
+        }
+
+        .login-link {
+            text-decoration: none;
+        }

@@ -1,0 +1,152 @@
+<% layout('/layouts/boilerplate') %>
+  <body>
+    <div class="signup-container">
+    <div class="card signup-card mx-auto">
+        <div class="card-body">
+
+            <!-- Heading -->
+            <!-- <div class="text-center mb-4">
+                <h2 class="fw-bold">Create Account</h2>
+                <p class="text-muted mb-0">
+                    Sign up to get started
+                </p>
+            </div> -->
+
+             <!-- Google Signup -->
+            <button type="button" class="btn google-btn w-100">
+                <img
+                    src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                    alt="Google"
+                    class="google-icon"
+                >
+                Sign up with Google
+            </button>
+
+            <!-- Divider -->
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+              <!-- Signup Form -->
+            <form  action="/signup" method="POST">
+
+                <div class="row"><div class="col"><!-- fist Name -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">
+                        First Name
+                    </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="first_name"
+                        placeholder="Enter your fist name"
+                        required
+                    >
+                </div>
+            </div>
+            <div class="col"><!-- last Name -->
+                <div class="mb-3">
+                    <label for="name" class="form-label">
+                        Last Name
+                    </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="last_name"
+                        placeholder="Enter your last name"
+                        required
+                    >
+                </div>
+            </div>
+        </div>
+                
+                
+
+                <!-- Email -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">
+                        Email Address
+                    </label>
+                    <input
+                        type="email"
+                        class="form-control"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">
+                        username
+                    </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="username"
+                        placeholder="Enter a username"
+                        required
+                    >
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">
+                        Password
+                    </label>
+                    <input
+                        type="password"
+                        class="form-control"
+                        name="password"
+                        placeholder="Create a password"
+                        minlength="8"
+                        required
+                    >
+                </div>
+
+                
+
+                <!-- Terms -->
+                <div class="form-check mb-4">
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="terms"
+                        required
+                    >
+                    <label class="form-check-label" for="terms">
+                        I agree to the
+                        <a href="#" class="text-decoration-none">
+                            Terms & Conditions
+                        </a>
+                    </label>
+                </div>
+
+                <!-- Submit -->
+                <button
+                    type="submit"
+                    class="btn btn-primary btn-signup w-100"
+                >
+                    Create Account
+                </button>
+
+            </form>
+
+            <!-- Login -->
+            <p class="text-center text-muted mt-4 mb-0">
+                Already have an account?
+                <a href="/login" class="login-link">
+                    Login
+                </a>
+            </p>
+           
+      
+
+
+        </div>
+    </div>
+</div>
+
+
+     
+  </body>
+</html>
