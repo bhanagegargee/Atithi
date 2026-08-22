@@ -23,12 +23,12 @@
         next();
     };
 
-module.exports.hasaccess =async (req,res,next)=>{
-        let {id}=req.params;
-         const one_listing = await listing.findById(id);
-          if (!one_listing.owner.equals(req.user._id)) {
-            req.flash("error", "You don't have permission to access this listing!");
-            return res.redirect(`/listings/${id}`);
-        }
-    next();
-};
+// module.exports.hasaccess =async (req,res,next)=>{
+//         let {id}=req.params;
+//          const one_listing = await listing.findById(id);
+//           if (!one_listing.owner.equals(req.user._id)) {
+//             req.flash("error", "You don't have permission to access this listing!");
+//             return res.redirect(`/listings/${id}`);
+//         }
+//     next();
+// };
