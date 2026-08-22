@@ -7,45 +7,16 @@ const { isLogin }= require("../middleware.js");
 const passport=require("passport");
 const { save_url }=require("../middleware.js");
 
-router.get("/signup",wrap_async( async(req,res)=>{
-    res.render("../views/user/signup.ejs");
-}));
+const controller= require("../controller/user.js");
 
-router.post("/signup",save_url, wrap_async(async (req,res,next)=>{
-
-    try{
-         let {first_name, last_name, email, username , password}=req.body;
-    const new_user=new user({first_name,last_name,email,username});
-    const registered_user= await user.register(new_user, password);
-    
-    req.login(registered_user,(err)=>{
-        if(err)
-        {
-            return next(err);
-        }
-        let redirect_url= res.locals.redirecturl || '/listings';
-         res.redirect(redirect_url);
-    })
-
-   
-    }
-    catch(e){
-        req.flash("error", e.message);
-        res.redirect("/signup");
-    }
-   
-})
-);
-
-router.get("/login" ,wrap_async( async(req,res)=>{
-    res.render("../views/user/login.ejs");
-}));
+router.route("/signup")
+.get(wrap_async( controller.signup_get))
+.post(save_url, wrap_async(controller.signup_post));
 
 
-router.post("/login",save_url,passport.authenticate('local',{ failureFlash: true , failureRedirect: "/login" }) ,wrap_async( async(req,res)=>{
-      let redirect_url= res.locals.redirecturl || "/listings";
-         res.redirect(redirect_url);
-}));
+router.route("/login")
+.get(wrap_async( controller.login_get))
+.post(save_url,passport.authenticate('local',{ failureFlash: true , failureRedirect: "/login" }) ,wrap_async( controller.login_post));
 
 router.get("/logout",isLogin ,(req,res)=>
 {
