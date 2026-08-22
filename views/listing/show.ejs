@@ -33,7 +33,7 @@
             <%= one_listing.location %>, <%= one_listing.country %>
         </p>
 
-        <% if(access) {%>
+        <% if(current_user && one_listing.owner.equals(current_user._id)) {%>
         <div class="show-btn-group">
             <a href="/listings/<%= one_listing._id %>/edit" class="btn edit-btn">
                 Update
