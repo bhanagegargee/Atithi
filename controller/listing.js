@@ -16,6 +16,11 @@ module.exports.new_listing=async (req,res)=>{
    let content=req.body.listing;
    content.owner=res.locals.current_user._id;
     // console.log(content);
+
+      content.image = {
+    url: req.file.path,
+    filename: req.file.filename,
+     };
     const new_listing = new listing(content);
     await new_listing.save();
     req.flash("success","new listing added !");
@@ -31,9 +36,7 @@ module.exports.show_record=async (req,res)=>{
         return res.redirect("/listings");
     }
 
-//    const access = res.locals.current_user
-//         ? one_listing.owner.equals(res.locals.current_user._id)
-//         : false;
+
    
     res.render("listing/show.ejs",{one_listing});
 };
@@ -47,8 +50,16 @@ module.exports.update_route=async (req,res)=>{
 
 module.exports.update_record=async (req,res)=>{
     const {id}=req.params;
-    await listing.findByIdAndUpdate(id , {...req.body.listing} ,{runValidators :true });
-   
+    const record=await listing.findByIdAndUpdate(id , {...req.body.listing} ,{runValidators :true });
+    
+    if(typeof req.file !== "undefined")
+    {
+        record.image = {
+            url: req.file.path,
+            filename: req.file.filename,
+            };
+        record.save();
+    }
     res.redirect(`/listings/${id}`);
 };
 

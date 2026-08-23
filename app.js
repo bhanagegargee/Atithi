@@ -1,3 +1,9 @@
+if(process.env.NODE_ENV !='production')
+{
+   require("dotenv").config();
+}
+
+
 const listing= require("./models/listing.js");      //listings model name
 const user= require("./models/user.js");      //user model name
 
@@ -107,10 +113,14 @@ app.all("/*splat",(req,res,next)=>{
 
 //all kinds of error handler  (this is ending middleware so only this will send the respnse)
 app.use((err,req,res,next)=>{
-    let {status=500 , message='something went wrong !!!'} = err;
+    let {status=500 , message='something went wrong gargee !!!'} = err;
     res.render("listing/error.ejs" , {message});
 
-    // res.status(status).send(message);
+    //     console.log("ERROR:", err);
+    // console.log("MESSAGE:", err.message);
+    // console.log("STACK:", err.stack);
+
+    // res.status(err.statusCode || 500).send(err.message);
 
 });
 
