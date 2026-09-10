@@ -25,8 +25,11 @@ const flash=require("connect-flash");
 app.use(flash());
 
 //authentication using passport
+
 const passport=require("passport");
 const localStratergy = require("passport-local");
+const GoogleStrategy =
+    require("passport-google-oauth20").Strategy;
 
 app.engine("ejs",ejsMate);
 
@@ -57,6 +60,109 @@ app.use(session(
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+
+passport.use(
+    new GoogleStrategy(
+        {
+            clientID: process.env.GOOGLE_CLIENT_ID,
+
+            clientSecret:
+                process.env.GOOGLE_CLIENT_SECRET,
+
+            callbackURL:
+                process.env.GOOGLE_CALLBACK_URL
+        },
+
+        async (
+            accessToken,
+            refreshToken,
+            profile,
+            done
+        ) => {
+
+            try {
+
+                // 1. Find by Google ID
+                let existingUser =
+                    await user.findOne({
+                        googleId: profile.id
+                    });
+
+                if (existingUser) {
+                    return done(null, existingUser);
+                }
+
+
+                // 2. Get Google email
+                const email =
+                    profile.emails?.[0]?.value;
+
+                if (!email) {
+                    return done(
+                        new Error(
+                            "Google account does not provide an email."
+                        ),
+                        null
+                    );
+                }
+
+
+                // 3. Check existing Atithi account
+                existingUser =
+                    await user.findOne({
+                        email: email
+                    });
+
+                if (existingUser) {
+
+                    existingUser.googleId =
+                        profile.id;
+
+                    await existingUser.save();
+
+                    return done(
+                        null,
+                        existingUser
+                    );
+                }
+
+
+                // 4. Create new Atithi user
+                const newUser =
+                    new user({
+                       first_name: profile.name?.givenName || profile.displayName || "Google",
+                        last_name: profile.name?.familyName || "User",
+
+
+                        email: email,
+
+                        username: email,
+
+                        googleId: profile.id
+                    });
+
+
+                // 5. Save user
+                await newUser.save();
+
+
+                // 6. Login
+                return done(
+                    null,
+                    newUser
+                );
+
+            } catch (err) {
+
+                return done(
+                    err,
+                    null
+                );
+            }
+        }
+    )
+);
 passport.use(new localStratergy(user.authenticate()));
 
 passport.serializeUser(user.serializeUser());

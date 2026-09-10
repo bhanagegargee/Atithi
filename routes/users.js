@@ -31,4 +31,23 @@ router.get("/logout",isLogin ,(req,res)=>
     
 });
 
+router.get(
+    "/auth/google",
+    passport.authenticate("google", {
+        scope: ["profile", "email"]
+    })
+);
+
+router.get(
+    "/auth/google/callback",
+    passport.authenticate("google", {
+        failureRedirect: "/login"
+    }),
+    (req, res) => {
+        let redirect_url = res.locals.redirecturl || "/listings";
+
+        res.redirect(redirect_url);
+    }
+);
+
 module.exports=router;
