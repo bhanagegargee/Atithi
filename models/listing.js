@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -7,8 +6,10 @@ const listingSchema = new Schema({
     type: String,
     required: true,
   },
+
   description: String,
-   image: {
+
+  image: {
     filename: {
       type: String,
       default: "listingimage",
@@ -19,16 +20,64 @@ const listingSchema = new Schema({
         "https://images.unsplash.com/photo-1625505826533-5c80aca7d157?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60",
     },
   },
+
   price: Number,
-  location: String,
-  country: String,
-  owner : {
-    type : Schema.Types.ObjectId,
-    ref : "user",
-  }
+
+  // Human-readable location
+  location: {
+    type: String
+  },
+
+  country: {
+    type: String
+    
+  },
+
+  state :{
+    type : String,
+    required : true,
+  },
+
+  // Exact latitude and longitude
+  coordinates: {
+    latitude: {
+      type: Number,
+      required: true,
+    },
+
+    longitude: {
+      type: Number,
+      required: true,
+    },
+  },
+
+  // GeoJSON location
+  geometry: {
+    type: {
+      type: String,
+      enum: ["Point"],
+      required: true,
+      default: "Point",
+    },
+
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
+
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+  },
 });
 
+// Important for future nearby-property searches
+listingSchema.index({ geometry: "2dsphere" });
 
+const Listing = mongoose.model("Listing", listingSchema);
+
+module.exports = Listing;
 
 // listingSchema.post("findOneAndDelete",async(listing)=>{
 //     if(listing){
@@ -36,5 +85,3 @@ const listingSchema = new Schema({
 //     }
 // });
 
-const Listing = mongoose.model("Listing", listingSchema);
-module.exports = Listing;

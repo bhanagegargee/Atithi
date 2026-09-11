@@ -36,34 +36,219 @@
             <label for="price" class="form-label">price</label>
              <input type="number" placeholder="price" name="listing[price]" class="form-control" required>
               <div class="invalid-feedback">
-        Please enter price 
-      </div>
+                Please enter price 
+              </div>
             </div>
        
             <div class="mb-3 col-md-8">
-            <label for="location" class="form-label">location</label>
+            <!-- <label for="location" class="form-label">location</label>
              <input type="text" placeholder="location" name="listing[location]" class="form-control" required>
               <div class="invalid-feedback">
-        Please enter proper location 
-      </div>
-            </div>
+                   Please enter proper location 
+              </div>
+            </div> -->
+               <label for="country" class="form-label">country</label>
+                    <!-- <input type="text" placeholder="country"   required> -->
+                    <select name="listing[country]" class="form-control">
+                      <option value="India">India </option>
+                    </select>
+                    <div class="invalid-feedback">
+                    Please enter country name 
+                  </div>
+
         </div>
         
+                
+          <div class="mb-3">
+             
+                <label for="state" class="form-label">
+                        State
+                    </label>
+
+                    <select
+                        id="state"
+                        name="listing[state]"
+                        class="form-select"
+                        required
+                    >
+
+                        <option value="" selected disabled>
+                            Select State
+                        </option>
+
+                        <option value="Andhra Pradesh">
+                            Andhra Pradesh
+                        </option>
+
+                        <option value="Arunachal Pradesh">
+                            Arunachal Pradesh
+                        </option>
+
+                        <option value="Assam">
+                            Assam
+                        </option>
+
+                        <option value="Bihar">
+                            Bihar
+                        </option>
+
+                        <option value="Chhattisgarh">
+                            Chhattisgarh
+                        </option>
+
+                        <option value="Goa">
+                            Goa
+                        </option>
+
+                        <option value="Gujarat">
+                            Gujarat
+                        </option>
+
+                        <option value="Haryana">
+                            Haryana
+                        </option>
+
+                        <option value="Himachal Pradesh">
+                            Himachal Pradesh
+                        </option>
+
+                        <option value="Jharkhand">
+                            Jharkhand
+                        </option>
+
+                        <option value="Karnataka">
+                            Karnataka
+                        </option>
+
+                        <option value="Kerala">
+                            Kerala
+                        </option>
+
+                        <option value="Madhya Pradesh">
+                            Madhya Pradesh
+                        </option>
+
+                        <option value="Maharashtra">
+                            Maharashtra
+                        </option>
+
+                        <option value="Manipur">
+                            Manipur
+                        </option>
+
+                        <option value="Meghalaya">
+                            Meghalaya
+                        </option>
+
+                        <option value="Mizoram">
+                            Mizoram
+                        </option>
+
+                        <option value="Nagaland">
+                            Nagaland
+                        </option>
+
+                        <option value="Odisha">
+                            Odisha
+                        </option>
+
+                        <option value="Punjab">
+                            Punjab
+                        </option>
+
+                        <option value="Rajasthan">
+                            Rajasthan
+                        </option>
+
+                        <option value="Sikkim">
+                            Sikkim
+                        </option>
+
+                        <option value="Tamil Nadu">
+                            Tamil Nadu
+                        </option>
+
+                        <option value="Telangana">
+                            Telangana
+                        </option>
+
+                        <option value="Tripura">
+                            Tripura
+                        </option>
+
+                        <option value="Uttar Pradesh">
+                            Uttar Pradesh
+                        </option>
+
+                        <option value="Uttarakhand">
+                            Uttarakhand
+                        </option>
+
+                        <option value="West Bengal">
+                            West Bengal
+                        </option>
+
+                    </select>
+
+                    <div class="invalid-feedback">
+                        Please select a state.
+                    </div>
+
+          </div>
        
-        <div class="mb-3">
-            <label for="country" class="form-label">country</label>
-             <input type="text" placeholder="country" name="listing[country]" class="form-control" required>
-         <div class="invalid-feedback">
-        Please enter country name 
-      </div>
-            </div>
-       
+          <div class="mb-3">
+             <label for="country" class="form-label">select the exact location of property</label>
+              <div
+                  id="map"
+                  style="
+                      width: 100%;
+                      height: 400px;
+                      border-radius: 12px;
+                      border: 1px solid #ddd;
+                  "
+              ></div>
+
+          </div>
+
+          
+
+<!-- <input
+    type="hidden"
+    name="listing[location]"
+    id="location"
+>
+
+<input
+    type="hidden"
+    name="listing[country]"
+    id="country"
+> -->
+
+<input
+    type="hidden"
+    name="listing[latitude]"
+    id="latitude"
+>
+
+<input
+    type="hidden"
+    name="listing[longitude]"
+    id="longitude"
+>
 
             <div class="mb-3">
                  <button class="btn add-btn">save</button>
+                        <!-- <button
+                        id="save-listing-btn"
+                        class="btn btn-dark"
+                        type="submit"
+                        disabled
+                    >
+                        Add
+                    </button> -->
             </div>
         
-       
+ 
         </form>
 
         </div>

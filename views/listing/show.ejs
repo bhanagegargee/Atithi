@@ -30,8 +30,26 @@
 
         <p class="card-text">
             <strong>Location:</strong>
-            <%= one_listing.location %>, <%= one_listing.country %>
+            <%= one_listing.location %>
         </p>
+        
+        <p class="card-text">
+        <%= one_listing.state %>
+        <%= one_listing.country %>
+        </p>
+        <% if (one_listing.coordinates) { %>
+
+            <a
+                href="https://www.google.com/maps/dir/?api=1&destination=<%= one_listing.coordinates.latitude %>,<%= one_listing.coordinates.longitude %>"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn-outline-dark"
+            >
+                <i class="fa-solid fa-location-arrow"></i>
+                Get Directions
+            </a>
+
+        <% } %>
 
         <% if(current_user && one_listing.owner.equals(current_user._id)) {%>
         <div class="show-btn-group">

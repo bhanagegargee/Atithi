@@ -10,6 +10,10 @@ const multer = require('multer');
 const upload = multer({ storage });
 
 const controller = require("../controller/listing.js");
+console.log(
+    "Geoapify key loaded:",
+    process.env.GEOAPIFY_API_KEY ? "YES" : "NO"
+);
 
 
 //show listings of host only
@@ -18,9 +22,15 @@ router.get("/host",wrap_async (controller.host_records));
 
 //create new listing route 
 router.get("/new",isLogin ,wrap_async(async(req,res)=>{
-    res.render("listing/new.ejs");
+    // res.render("listing/new.ejs");
+
+      res.render("listing/new.ejs", {
+        geoapifyApiKey: process.env.GEOAPIFY_API_KEY
+    });
 }));
 
+//reverse geocoding
+router.get("/reverse-geocode", isLogin, wrap_async(controller.reverse_geo));
 
 router.route("/")
 .post(upload.single("listing[image]"),wrap_async (controller.new_listing))
