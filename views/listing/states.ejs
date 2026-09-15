@@ -1,0 +1,50 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+
+<%
+  // Short, factual cultural taglines for the states already present
+  // in the sample data. Any state not listed here (e.g. a brand new
+  // one added later) falls back to a generic line below.
+  const stateInfo = {
+    "Kerala": "Backwaters • Nature • Traditions",
+    "Maharashtra": "Forts • Wadas • Konkan Culture",
+    "Goa": "Beaches • Heritage • Portuguese Culture",
+    "Gujarat": "Havelis • Rann • Heritage",
+    "Rajasthan": "Havelis • Desert • Royal Heritage",
+    "Jammu and Kashmir": "Mountains • Houseboats • Kashmiri Culture",
+    "Chhattisgarh": "Tribal Culture • Forests • Waterfalls",
+    "Andhra Pradesh": "Heritage • Beaches • Eastern Ghats"
+  };
+%>
+
+<div class="state-page-header">
+  <h2 class="fw-bold mb-1">Explore India by State</h2>
+  <p class="text-muted">Choose a state to see stays inspired by its culture and landscapes.</p>
+</div>
+
+<% if (states.length === 0) { %>
+  <div class="empty-container">
+    <h4>No states available yet.</h4>
+    <a href="/listings" class="btn edit-btn mt-2">Browse all listings</a>
+  </div>
+<% } else { %>
+  <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-3">
+    <% for (let state of states) { %>
+      <div class="col">
+        <a href="/listings/state/<%= encodeURIComponent(state) %>" class="state-card-link">
+          <div class="card state-card">
+            <div class="card-body">
+              <h5 class="state-card-title"><%= state %></h5>
+              <p class="state-card-desc mb-0">
+                <%= stateInfo[state] || "Discover unique stays and experiences" %>
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    <% } %>
+  </div>
+<% } %>
+
+</body>
+</html>

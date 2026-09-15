@@ -548,3 +548,32 @@ module.exports.delete_route=async (req,res)=>{
     
     res.redirect("/listings");
 };
+
+// ---------------------------------------------------------------
+// EXPLORE INDIA BY STATE
+// ---------------------------------------------------------------
+
+// GET /listings/states
+// Renders the state-selection page. States are pulled dynamically
+// from the existing "state" field on Listing documents, so any new
+// state used on a future listing appears automatically.
+module.exports.list_states = async (req, res) => {
+    let states = await listing.distinct("state");
+
+    // Guard against null/empty values and keep the list alphabetical.
+    states = states.filter(Boolean).sort();
+
+    res.render("listing/states.ejs", { states });
+};
+
+// GET /listings/state/:state
+// Express automatically decodes the route param, so values with
+// spaces (e.g. "Jammu and Kashmir") arrive intact and match the
+// stored value exactly.
+module.exports.state_records = async (req, res) => {
+    const { state } = req.params;
+
+    const listings = await listing.find({ state });
+
+    res.render("listing/state.ejs", { listings, state });
+};

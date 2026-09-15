@@ -32,6 +32,16 @@ router.get("/new",isLogin ,wrap_async(async(req,res)=>{
 //reverse geocoding
 router.get("/reverse-geocode", isLogin, wrap_async(controller.reverse_geo));
 
+// Explore India by State - state selection page
+// IMPORTANT: must be registered before router.route("/:id") below,
+// otherwise "/listings/states" would be swallowed by the ":id" param route.
+router.get("/states", wrap_async(controller.list_states));
+
+// Explore India by State - listings filtered by a specific state
+// Two segments ("/state/:state"), so it can't collide with "/:id",
+// but kept alongside "/states" for clarity.
+router.get("/state/:state", wrap_async(controller.state_records));
+
 router.route("/")
 .post(upload.single("listing[image]"),wrap_async (controller.new_listing))
 

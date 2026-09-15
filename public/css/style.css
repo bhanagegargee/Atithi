@@ -186,3 +186,40 @@ label {
         .login-link {
             text-decoration: none;
         }
+
+        /* ---------------------------------------------------- */
+/* Explore India by State                                */
+/* ---------------------------------------------------- */
+ 
+.state-page-header{
+    margin: 1.5rem 0 1rem 0;
+}
+ 
+.state-card-link{
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+ 
+.state-card{
+    border-radius: 14px !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    height: 100%;
+}
+ 
+.state-card:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.14);
+}
+ 
+.state-card-title{
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: black;
+}
+ 
+.state-card-desc{
+    color: #666;
+    font-size: 0.9rem;
+}
