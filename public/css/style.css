@@ -187,6 +187,123 @@ label {
             text-decoration: none;
         }
 
+/* ===================================================================
+   NEARBY POPULAR PLACES (Foursquare-powered)
+   Matches the existing show-card look: rounded corners, soft shadow,
+   brown accent (same brown used by .edit-btn / .add-btn / navbar icon).
+   All class names are scoped with "nearby-" to avoid colliding with
+   existing generic classes like .card / .container / .title.
+   =================================================================== */
+
+.nearby-section{
+    max-width: 750px;
+    margin: 0 auto 3rem auto;
+    padding: 1.8rem;
+}
+
+.nearby-heading{
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.nearby-subtext{
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.nearby-category{
+    margin-bottom: 2rem;
+}
+
+.nearby-category-title{
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.nearby-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.nearby-card{
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 1rem 1.1rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nearby-card:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+.nearby-card-title{
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+    color: #222;
+}
+
+.nearby-card-meta{
+    margin-bottom: 0.25rem;
+    color: #555;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.nearby-rating{
+    margin-bottom: 0.25rem;
+    color: #b8860b;
+    font-weight: 600;
+    font-size: 0.92rem;
+}
+
+.nearby-distance{
+    margin-bottom: 0.25rem;
+    color: #555;
+    font-size: 0.92rem;
+}
+
+.nearby-badge{
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    color: brown;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.nearby-card-address{
+    color: #777;
+    font-size: 0.85rem;
+    margin-bottom: 0.6rem;
+}
+
+.nearby-card-link{
+    display: inline-block;
+    color: brown;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.nearby-card-link:hover{
+    text-decoration: underline;
+}
+
+@media (max-width: 576px){
+    .nearby-section{
+        padding: 1.2rem;
+    }
+
+    .nearby-grid{
+        grid-template-columns: 1fr;
+    }
+}
+
+
         /* ---------------------------------------------------- */
 /* Explore India by State                                */
 /* ---------------------------------------------------- */

@@ -66,6 +66,125 @@
         <% } %>
     </div>
 </div>
+
+<!-- ===================================================================
+     NEARBY POPULAR PLACES
+     Populated server-side by controller/listing.js -> services/nearbyPlaces.js
+     (Geoapify Places API — see that file for the full integration).
+     Fails silently to a hidden/fallback state; never breaks this page.
+     Class names are scoped with a "nearby-" prefix throughout to avoid
+     colliding with existing Atithi CSS (.card, .container, .title, etc).
+     =================================================================== -->
+
+<%
+    // Defensive default: if this view is ever rendered without
+    // nearbyPlaces being passed at all (e.g. an older controller,
+    // a different route, or a future code path), fall back to an
+    // empty object instead of throwing "nearbyPlaces is not defined".
+    const _nearbyPlaces = (typeof nearbyPlaces !== "undefined" && nearbyPlaces) ? nearbyPlaces : { food: [], travel: [] };
+    const hasFood = Array.isArray(_nearbyPlaces.food) && _nearbyPlaces.food.length > 0;
+    const hasTravel = Array.isArray(_nearbyPlaces.travel) && _nearbyPlaces.travel.length > 0;
+%>
+
+<% if (hasFood || hasTravel) { %>
+
+<div class="nearby-section">
+
+    <h4 class="nearby-heading">✨ Nearby Popular Places</h4>
+    <p class="nearby-subtext">
+        Discover popular food, attractions and things to explore near this stay.
+    </p>
+
+    <% if (hasFood) { %>
+    <div class="nearby-category">
+        <h5 class="nearby-category-title">🍴 Popular Food &amp; Dining</h5>
+
+        <div class="nearby-grid">
+            <% for (let place of _nearbyPlaces.food) { %>
+                <div class="nearby-card">
+                    <p class="nearby-card-title"><%= place.name %></p>
+
+                    <% if (place.category) { %>
+                        <p class="nearby-card-meta"><%= place.category %></p>
+                    <% } %>
+
+                    <% if (place.rating != null) { %>
+                        <p class="nearby-rating">⭐ <%= place.rating %></p>
+                    <% } %>
+
+                    <% if (place.distanceLabel) { %>
+                        <p class="nearby-distance">📍 <%= place.distanceLabel %> away</p>
+                    <% } %>
+
+                    <% if (place.badge) { %>
+                        <p class="nearby-badge">🔥 <%= place.badge %></p>
+                    <% } %>
+
+                    <% if (place.address) { %>
+                        <p class="nearby-card-address"><%= place.address %></p>
+                    <% } %>
+
+                    <% const exploreUrl = place.placeUrl || (place.latitude != null && place.longitude != null
+                        ? `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`
+                        : null); %>
+                    <% if (exploreUrl) { %>
+                        <a href="<%= exploreUrl %>" target="_blank" rel="noopener noreferrer" class="nearby-card-link">
+                            Explore &rarr;
+                        </a>
+                    <% } %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <% } %>
+
+    <% if (hasTravel) { %>
+    <div class="nearby-category">
+        <h5 class="nearby-category-title">🗺️ Popular Places to Visit</h5>
+
+        <div class="nearby-grid">
+            <% for (let place of _nearbyPlaces.travel) { %>
+                <div class="nearby-card">
+                    <p class="nearby-card-title"><%= place.name %></p>
+
+                    <% if (place.category) { %>
+                        <p class="nearby-card-meta"><%= place.category %></p>
+                    <% } %>
+
+                    <% if (place.rating != null) { %>
+                        <p class="nearby-rating">⭐ <%= place.rating %></p>
+                    <% } %>
+
+                    <% if (place.distanceLabel) { %>
+                        <p class="nearby-distance">📍 <%= place.distanceLabel %> away</p>
+                    <% } %>
+
+                    <% if (place.badge) { %>
+                        <p class="nearby-badge">🔥 <%= place.badge %></p>
+                    <% } %>
+
+                    <% if (place.address) { %>
+                        <p class="nearby-card-address"><%= place.address %></p>
+                    <% } %>
+
+                    <% const exploreUrl = place.placeUrl || (place.latitude != null && place.longitude != null
+                        ? `https://www.google.com/maps/search/?api=1&query=${place.latitude},${place.longitude}`
+                        : null); %>
+                    <% if (exploreUrl) { %>
+                        <a href="<%= exploreUrl %>" target="_blank" rel="noopener noreferrer" class="nearby-card-link">
+                            Explore &rarr;
+                        </a>
+                    <% } %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+    <% } %>
+
+</div>
+
+<% } %>
+
 </body>
 </html>
 

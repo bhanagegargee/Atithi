@@ -1,5 +1,5 @@
 const listing = require("../models/listing.js");
-
+const { getNearbyPlaces } = require("../services/nearbyPlaces.js");
 module.exports.all_records=async (req,res)=>{
     const listings= await listing.find({ });
     res.render("listing/index.ejs",{listings});
@@ -500,19 +500,39 @@ module.exports.reverse_geo = async (req, res) => {
 
     };
 
-module.exports.show_record=async (req,res)=>{
+// module.exports.show_record=async (req,res)=>{
+//     const {id}=req.params;
+//     const one_listing= await listing.findById(id);
+//     if(!one_listing){
+//         req.flash("error", "the listing does not exists !");
+//         return res.redirect("/listings");
+//     }
+
+
+   
+//     res.render("listing/show.ejs",{one_listing});
+// };
+
+ module.exports.show_record=async (req,res)=>{
     const {id}=req.params;
     const one_listing= await listing.findById(id);
     if(!one_listing){
         req.flash("error", "the listing does not exists !");
         return res.redirect("/listings");
     }
-
-
-   
-    res.render("listing/show.ejs",{one_listing});
+ 
+    // "Nearby Famous" — fail-safe: a nearby-places failure must never
+    // prevent the listing page itself from rendering.
+    let nearbyPlaces = { food: [], travel: [] };
+    try {
+        nearbyPlaces = await getNearbyPlaces(one_listing);
+    } catch (error) {
+        console.error("Nearby places error:", error.message);
+    }
+ 
+    res.render("listing/show.ejs",{one_listing, nearbyPlaces});
 };
-
+ 
 module.exports.update_route=async (req,res)=>{
     const {id}=req.params;
 
