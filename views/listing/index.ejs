@@ -1,28 +1,44 @@
 <% layout('/layouts/boilerplate') %>
-  <body>
-  <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1">
-  
-    <% for(let listing of listings) { %>
+<body>
 
-      <a href="listings/<%= listing._id %>" class="listing-link">
-      <div class="card col" >
-        <img src="<%= listing.image.url %>" class="card-img-top" alt="listings-img" style="height : 20rem">
-        <div class="card-body">
-          <p class="card-text"><b><%= listing.title %></b><br>
-          <% if (listing.price != null) { %>
-             &#8377; <%= listing.price.toLocaleString("en-IN") %>
-            <% } else { %>
-             Price not available
-            <% } %>
-        </div>
-      </div>
-      </a>
-
-   <% } %>
+  <div class="hero-banner">
+    <span class="hero-badge"><i class="fa-solid fa-om me-1"></i> Atithi Devo Bhava</span>
+    <h1>Find your next stay, anywhere in India</h1>
+    <p>From backwaters in Kerala to deserts in Rajasthan — browse handpicked homestays, villas and retreats hosted by locals.</p>
   </div>
-  
 
+  <div class="listing-grid">
+    <% if (listings.length === 0) { %>
+      <div class="empty-container">
+        <h1><i class="fa-regular fa-compass"></i></h1>
+        <p>No listings yet. Be the first to <a href="/listings/new">add a stay</a>.</p>
+      </div>
+    <% } %>
 
-     
-  </body>
+    <% for(let listing of listings) { %>
+      <a href="listings/<%= listing._id %>" class="listing-link">
+        <div class="listing-card">
+          <div class="listing-card-img-wrap">
+            <img src="<%= listing.image.url %>" alt="<%= listing.title %>">
+            <span class="listing-price-chip">
+              <% if (listing.price != null) { %>
+                &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+              <% } else { %>
+                Price on request
+              <% } %>
+            </span>
+          </div>
+          <div class="listing-card-body">
+            <p class="listing-card-title"><%= listing.title %></p>
+            <p class="listing-card-location">
+              <i class="fa-solid fa-location-dot"></i>
+              <%= listing.location %><% if (listing.state) { %>, <%= listing.state %><% } %>
+            </p>
+          </div>
+        </div>
+      </a>
+    <% } %>
+  </div>
+
+</body>
 </html>

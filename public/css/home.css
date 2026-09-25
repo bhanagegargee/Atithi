@@ -1,0 +1,406 @@
+/* ===========================================================================
+   home.css — the Atithi landing page.
+   Loaded after style.css / booking.css; uses the same theme variables so it
+   follows light/dark mode automatically. Nothing here is a hardcoded color.
+   =========================================================================== */
+
+.landing { overflow-x: hidden; }
+
+/* ---------------------------------------------------------------- hero ---- */
+
+.landing-hero {
+  position: relative;
+  min-height: 82vh;
+  display: flex;
+  align-items: center;
+  border-radius: 26px;
+  overflow: hidden;
+  margin-top: 1.5rem;
+  background-size: cover;
+  background-position: center 30%;
+  isolation: isolate;
+}
+
+.landing-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 8, 10, 0.55) 0%, rgba(15, 8, 10, 0.75) 55%, rgba(15, 8, 10, 0.92) 100%);
+  z-index: 0;
+}
+
+.landing-hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 2.8rem;
+  max-width: 720px;
+  color: #fdf6ec;
+}
+
+.hero-slogan {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(6px);
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 1.3rem;
+}
+
+.hero-slogan i { color: var(--accent-secondary); }
+
+.landing-hero h1 {
+  font-size: 3.1rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+.landing-hero h1 em {
+  font-style: normal;
+  background: linear-gradient(135deg, #F0A93B, #E2536B);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.landing-hero p {
+  font-size: 1.15rem;
+  opacity: 0.92;
+  max-width: 540px;
+  margin-bottom: 1.8rem;
+}
+
+.hero-cta-row { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+
+.hero-cta-row .btn { padding: 0.75rem 1.7rem !important; font-weight: 600; }
+
+.btn-hero-ghost {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.5) !important;
+  color: #fdf6ec !important;
+  border-radius: 10px !important;
+}
+
+.btn-hero-ghost:hover { background: rgba(255, 255, 255, 0.2) !important; color: #fff !important; }
+
+/* ------------------------------------------------------------ sections ---- */
+
+.landing-section { padding: 4rem 0; }
+.landing-section.is-tinted {
+  /* background: var(--bg-soft); */
+  background-image: url('/images/blurr.jpg');
+  border-radius: 26px;
+  height: 600px;
+  margin-top : 1 rem;
+}
+
+.section-head { max-width: 640px; margin-bottom: 2.2 rem; }
+.section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+
+.eyebrow {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-secondary);
+  margin-bottom: 0.6rem;
+}
+
+.section-head h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.section-head p { color: var(--text-muted); margin-bottom: 0; }
+
+/* --------------------------------------------------------- region grid ---- */
+
+.region-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.3rem;
+}
+
+.region-card {
+  position: relative;
+  height: 320px;
+  border-radius: 18px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.region-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+.region-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 10, 12, 0) 35%, rgba(15, 8, 10, 0.88) 100%);
+}
+
+.region-card.no-photo {
+  background: var(--gradient-hero);
+  justify-content: center;
+  text-align: center;
+}
+
+.region-card.no-photo::after { display: none; }
+
+.region-card-body {
+  position: relative;
+  z-index: 1;
+  padding: 1.3rem;
+  color: #fdf6ec;
+  width: 100%;
+}
+
+.region-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  margin-bottom: 0.5rem;
+}
+
+.region-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.region-card p { font-size: 0.88rem; opacity: 0.9; margin: 0; }
+
+.region-card.no-photo i {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* --------------------------------------------------------------- gallery -- */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 130px;
+  gap: 0.9rem;
+}
+
+.gallery-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+.gallery-item { border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-sm); }
+.gallery-item:hover img { transform: scale(1.06); }
+
+.gallery-item.tall { grid-row: span 2; }
+.gallery-item.wide { grid-column: span 2; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.6rem; }
+
+.craft-chip {
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background: var(--chip-bg);
+  color: var(--accent-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+/* ------------------------------------------------------------ food grid --- */
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.4rem;
+}
+
+.food-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.food-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+.food-card img { width: 100%; height: 190px; object-fit: cover; display: block; }
+
+.food-card-body { padding: 1rem 1.15rem 1.2rem; }
+.food-card-region {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-teal);
+  margin-bottom: 0.25rem;
+}
+.food-card-title { font-weight: 700; color: var(--text-primary); margin: 0; }
+
+/* --------------------------------------------------------- festival strip - */
+
+.strip-row {
+  display: flex;
+  gap: 1.2rem;
+  overflow-x: auto;
+  padding-bottom: 0.8rem;
+  scroll-snap-type: x proximity;
+}
+
+.strip-card {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  position: relative;
+  width: 230px;
+  height: 320px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.strip-card img { width: 100%; height: 100%; object-fit: cover; }
+
+.strip-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15,8,10,0) 45%, rgba(15,8,10,0.85) 100%);
+}
+
+.strip-caption {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 1;
+  padding: 1rem;
+  color: #fdf6ec;
+}
+
+.strip-caption .region-tag { margin-bottom: 0.35rem; }
+.strip-caption strong { display: block; font-size: 1rem; }
+
+.strip-card.no-photo {
+  background: var(--gradient-hero);
+  display: flex;
+  align-items: flex-end;
+}
+
+.strip-card.no-photo::after { display: none; }
+
+.strip-card.no-photo i {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  font-size: 1.5rem;
+  color: rgba(255,255,255,0.85);
+}
+
+.food-card.no-photo .food-card-visual {
+  height: 190px;
+  background: var(--gradient-hero);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.food-card.no-photo .food-card-visual i {
+  font-size: 2.2rem;
+  color: rgba(255,255,255,0.9);
+}
+
+/* --------------------------------------------------------- stay showcase -- */
+
+.stay-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.stay-feature.reverse .stay-feature-img { order: 2; }
+.stay-feature.reverse .stay-feature-text { order: 1; }
+
+.stay-feature-img img {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+}
+
+.stay-feature-text .eyebrow { margin-bottom: 0.5rem; }
+.stay-feature-text h3 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.7rem;
+}
+.stay-feature-text p { color: var(--text-secondary); margin-bottom: 1.2rem; }
+
+/* -------------------------------------------------------------- cta band -- */
+
+.cta-band {
+  text-align: center;
+  padding: 3.5rem 2rem;
+  border-radius: 26px;
+  background: var(--gradient-hero);
+  color: #fdf6ec;
+  margin: 4rem 0 2rem;
+}
+
+.cta-band h2 { font-size: 2rem; font-weight: 800; margin-bottom: 0.6rem; }
+.cta-band p { opacity: 0.92; margin-bottom: 1.6rem; }
+.cta-band .btn { padding: 0.75rem 1.8rem !important; font-weight: 700; }
+
+.btn-cta-light {
+  background: #fdf6ec !important;
+  color: var(--accent-primary) !important;
+  border: none !important;
+  border-radius: 10px !important;
+}
+
+.btn-cta-light:hover { filter: brightness(0.95); color: var(--accent-primary) !important; }
+
+/* ------------------------------------------------------------- responsive - */
+
+@media (max-width: 991.98px) {
+  .landing-hero { min-height: 70vh; }
+  .landing-hero h1 { font-size: 2.3rem; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-item.wide { grid-column: span 2; }
+  .stay-feature { grid-template-columns: 1fr; }
+  .stay-feature.reverse .stay-feature-img,
+  .stay-feature.reverse .stay-feature-text { order: initial; }
+}
+
+@media (max-width: 575.98px) {
+  .landing-hero-content { padding: 2rem 1.4rem; }
+  .landing-hero h1 { font-size: 1.9rem; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 110px; }
+}

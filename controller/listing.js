@@ -1,9 +1,18 @@
 const listing = require("../models/listing.js");
 const { getNearbyPlaces } = require("../services/nearbyPlaces.js");
+
+
+// booking feature: amenities / optional details + reservation-card data
+const { splitListingExtras } = require("../utils/listingExtras.js");
+const { CONFIG, parseBookingDates, parseGuests, getMaxGuests, toDateString } = require("../utils/booking.js");
+const booking = require("../models/booking.js");
+
+
 module.exports.all_records=async (req,res)=>{
     const listings= await listing.find({ });
     res.render("listing/index.ejs",{listings});
 };
+
 
 module.exports.host_records=async (req,res)=>{
     const accessed_listings= await listing.find({
@@ -31,10 +40,28 @@ module.exports.new_listing = async (req, res) => {
 
     try {
 
+        // let content = req.body.listing;
+
+        // content.owner =
+        //     res.locals.current_user._id;
+
         let content = req.body.listing;
+
+
+        // -----------------------------------------
+        // AMENITIES + OPTIONAL PROPERTY DETAILS
+        // Only known amenities and valid values get through
+        // (see utils/listingExtras.js). Everything else in the
+        // form is passed on exactly as before.
+        // -----------------------------------------
+
+        const extras = splitListingExtras(content);
+        content = { ...extras.rest, ...extras.set };
+
 
         content.owner =
             res.locals.current_user._id;
+
 
 
         // -----------------------------------------
@@ -242,6 +269,7 @@ module.exports.new_listing = async (req, res) => {
 
         await new_listing.save();
 
+      
 
         req.flash(
             "success",
@@ -520,6 +548,23 @@ module.exports.reverse_geo = async (req, res) => {
         req.flash("error", "the listing does not exists !");
         return res.redirect("/listings");
     }
+
+        // Data for the reservation card. The optional ?checkIn=&checkOut=&guests=
+    // query is only used to pre-fill the card (for example after a login),
+    // and is validated first.
+    const maxGuests = getMaxGuests(one_listing);
+    const prefillDates = parseBookingDates(req.query.checkIn, req.query.checkOut);
+    const prefillGuests = parseGuests(req.query.guests, maxGuests);
+    const reservation = {
+        maxGuests,
+        maxNights: CONFIG.MAX_STAY_NIGHTS,
+        prefill: {
+            checkIn: prefillDates.ok ? toDateString(prefillDates.checkIn) : null,
+            checkOut: prefillDates.ok ? toDateString(prefillDates.checkOut) : null,
+            guests: prefillGuests.ok ? prefillGuests.guests : 1,
+        },
+    };
+
  
     // "Nearby Famous" — fail-safe: a nearby-places failure must never
     // prevent the listing page itself from rendering.
@@ -530,7 +575,7 @@ module.exports.reverse_geo = async (req, res) => {
         console.error("Nearby places error:", error.message);
     }
  
-    res.render("listing/show.ejs",{one_listing, nearbyPlaces});
+    res.render("listing/show.ejs",{one_listing, nearbyPlaces,reservation});
 };
  
 module.exports.update_route=async (req,res)=>{
@@ -542,7 +587,16 @@ module.exports.update_route=async (req,res)=>{
 
 module.exports.update_record=async (req,res)=>{
     const {id}=req.params;
-    const record=await listing.findByIdAndUpdate(id , {...req.body.listing} ,{runValidators :true });
+
+    // Amenities and optional details are validated separately.
+    // A blank optional field is removed from the listing ($unset).
+    const { rest, set, unset } = splitListingExtras(req.body.listing);
+    const changes = { ...rest, ...set };
+    const update = {};
+    if (Object.keys(changes).length) update.$set = changes;
+    if (Object.keys(unset).length) update.$unset = unset;
+
+    const record=await listing.findByIdAndUpdate(id , update ,{runValidators :true });
     
     if(typeof req.file !== "undefined")
     {
@@ -555,6 +609,7 @@ module.exports.update_record=async (req,res)=>{
     res.redirect(`/listings/${id}`);
 };
 
+
 module.exports.delete_route=async (req,res)=>{
     const {id}=req.params;
 
@@ -564,8 +619,19 @@ module.exports.delete_route=async (req,res)=>{
     //     return res.redirect(`/listings/${id}`);
     // }
 
-    await listing.findByIdAndDelete(id);
-    
+    // let booked = await booking.findOne({listing : id});
+    // if(booked)
+    // {
+       //  first notify all the users/guest who confirmed booking that the lsiting is no more in serviece your payment will refund
+       // after notifying guests then delete
+    // }
+    // else(!booked)
+    // {
+    //     //confirmation pop message if yess then delete otherwise do not delete
+    //     
+    // }
+
+     await listing.findByIdAndDelete(id);
     res.redirect("/listings");
 };
 
@@ -597,3 +663,4 @@ module.exports.state_records = async (req, res) => {
 
     res.render("listing/state.ejs", { listings, state });
 };
+

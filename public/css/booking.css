@@ -1,0 +1,613 @@
+/* ===========================================================================
+   booking.css — amenities, reservation card, calendar, checkout, booking
+   lists, and the "Nearby Popular Places" section.
+
+   Loaded AFTER style.css (see boilerplate.ejs) so it can read the same
+   --bg-elevated / --accent-primary / ... variables and automatically
+   follows light/dark mode — nothing in here is hardcoded to a color.
+   =========================================================================== */
+
+/* Elements hidden with the `hidden` attribute must stay hidden even where
+   a rule below sets `display`. */
+.amenity-item[hidden],
+.res-calendar[hidden],
+.res-summary[hidden] {
+    display: none !important;
+}
+
+/* ------------------------------------------------------------------ host form */
+
+.listing-extras {
+    margin-top: 1.75rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.extras-heading {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-family: 'Playfair Display', serif;
+}
+
+.extras-optional,
+.extras-hint {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.extras-legend {
+    float: none;
+    width: auto;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    padding: 0;
+    color: var(--text-secondary);
+}
+
+.amenity-group { margin-bottom: 1.25rem; }
+
+.amenity-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 0.6rem;
+}
+
+.amenity-option { position: relative; }
+
+.amenity-option .form-check-input {
+    position: absolute;
+    top: 50%;
+    right: 0.85rem;
+    margin: 0;
+    transform: translateY(-50%);
+}
+
+.amenity-label {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    width: 100%;
+    padding: 0.7rem 2.5rem 0.7rem 0.85rem;
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    background: var(--bg-soft);
+    color: var(--text-primary);
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.amenity-label i { width: 1.25rem; text-align: center; color: var(--text-muted); }
+
+.amenity-option .form-check-input:checked + .amenity-label {
+    border-color: var(--accent-secondary);
+    background: var(--chip-bg);
+}
+
+.amenity-option .form-check-input:checked + .amenity-label i { color: var(--accent-primary); }
+
+.amenity-option .form-check-input:focus-visible + .amenity-label {
+    outline: 2px solid var(--accent-secondary);
+    outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------- show page */
+
+.show-facts {
+    color: var(--text-muted);
+    margin-top: -0.5rem;
+}
+
+.show-rules {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.amenity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.9rem 1.5rem;
+}
+
+.amenity-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.amenity-item i {
+    width: 1.4rem;
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--accent-primary);
+}
+
+/* -------------------------------------------------------- reservation card */
+
+.reservation-card {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    padding: 1.6rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+}
+
+@media (min-width: 992px) {
+    /* the navbar is sticky-top, so leave room for it */
+    .reservation-card {
+        position: sticky;
+        top: 5.5rem;
+    }
+}
+
+.res-price { margin-bottom: 1rem; }
+
+.res-price-amount {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--accent-primary);
+    font-family: 'Playfair Display', serif;
+}
+
+.res-price-unit { color: var(--text-muted); }
+
+.res-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1.5px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.res-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15rem;
+    padding: 0.6rem 0.8rem;
+    background: var(--bg-soft);
+    border: 0;
+    text-align: left;
+    font: inherit;
+    color: var(--text-primary);
+}
+
+button.res-field { cursor: pointer; }
+button.res-field:hover:not(:disabled) { background: var(--chip-bg); }
+button.res-field:disabled { cursor: wait; color: var(--text-muted); }
+
+.res-field-out { border-left: 1.5px solid var(--border-color); }
+
+.res-field-guests {
+    grid-column: 1 / -1;
+    border-top: 1.5px solid var(--border-color);
+}
+
+.res-field:focus-visible,
+.res-select:focus-visible {
+    outline: 2px solid var(--accent-secondary);
+    outline-offset: -2px;
+}
+
+.res-label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); }
+.res-value { font-size: 0.95rem; color: var(--text-primary); }
+
+.res-select {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+}
+
+.res-status {
+    min-height: 1.4rem;
+    margin: 0.75rem 0;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.res-status-error { color: var(--accent-primary); }
+
+.res-retry {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent-primary);
+    text-decoration: underline;
+    font: inherit;
+    cursor: pointer;
+}
+
+.res-submit { padding: 0.8rem; border-radius: 10px; font-weight: 700; }
+.res-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.res-note { margin: 0.75rem 0 0; font-size: 0.9rem; color: var(--text-muted); }
+.res-note-center { text-align: center; }
+
+.res-summary {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.res-summary-row { display: flex; justify-content: space-between; gap: 1rem; color: var(--text-primary); }
+
+/* ---------------------------------------------------------------- calendar */
+
+.res-calendar {
+    position: absolute;
+    left: 1rem;
+    right: 1rem;
+    z-index: 30;
+    margin-top: 0.5rem;
+    padding: 1rem;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+}
+
+.cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+.cal-title { font-weight: 700; color: var(--text-primary); }
+
+.cal-nav {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.cal-nav:hover:not(:disabled) { background: var(--chip-bg); }
+.cal-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.cal-weekdays, .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+}
+
+.cal-weekdays span { padding: 0.25rem 0; font-size: 0.8rem; color: var(--text-muted); }
+
+.cal-day {
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: transparent;
+    font: inherit;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.cal-day:hover:not(:disabled) { border-color: var(--accent-secondary); }
+
+.cal-day:focus-visible,
+.cal-nav:focus-visible,
+.cal-clear:focus-visible {
+    outline: 2px solid var(--accent-secondary);
+    outline-offset: 1px;
+}
+
+.cal-day:disabled { cursor: not-allowed; }
+
+.cal-day.is-booked { color: var(--text-muted); text-decoration: line-through; }
+.cal-day.is-past { color: var(--border-color); }
+.cal-day.is-handover { text-decoration: underline dotted; text-underline-offset: 3px; }
+.cal-day.is-in-range { background: var(--chip-bg); border-radius: 0; }
+
+.cal-day.is-selected,
+.cal-day.is-selected:disabled {
+    background: var(--gradient-btn);
+    border-color: transparent;
+    color: #fff;
+    text-decoration: none;
+}
+
+.cal-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.cal-hint { color: var(--text-muted); }
+
+.cal-clear {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent-primary);
+    text-decoration: underline;
+    font: inherit;
+    cursor: pointer;
+}
+
+.cal-legend { margin: 0.5rem 0 0; font-size: 0.8rem; color: var(--text-muted); }
+
+/* ---------------------------------------------- checkout / booking pages */
+
+.booking-page { max-width: 1000px; margin: 2rem auto; }
+.booking-page h2 { font-weight: 700; margin-bottom: 1.5rem; color: var(--text-primary); }
+
+.booking-panel {
+    padding: 1.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    background: var(--bg-elevated);
+}
+
+.summary-card {
+    padding: 1.3rem;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-md);
+}
+
+.summary-head {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.summary-img { width: 110px; height: 90px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+
+.summary-title { font-size: 1.1rem; font-weight: 700; margin: 0 0 0.25rem; color: var(--text-primary); }
+.summary-meta { margin: 0; font-size: 0.9rem; color: var(--text-muted); }
+
+.summary-block { padding: 1.25rem 0; border-bottom: 1px solid var(--border-color); }
+.summary-block h3, .summary-block h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary); }
+.summary-block:last-child { border-bottom: 0; padding-bottom: 0; }
+
+.summary-line { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 0.5rem; color: var(--text-secondary); }
+.summary-line-total { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color); font-weight: 700; color: var(--text-primary); }
+
+.terms-note { font-size: 0.9rem; color: var(--text-muted); }
+
+.pay-btn { padding: 0.85rem 1.5rem; border-radius: 10px; font-weight: 700; }
+
+.booking-alert {
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    background: var(--chip-bg);
+    color: var(--accent-primary);
+    margin-bottom: 1rem;
+}
+
+.booking-alert a { color: var(--accent-primary); font-weight: 600; text-decoration: underline; }
+
+/* status pills */
+.pill {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: var(--bg-soft);
+    color: var(--text-secondary);
+}
+
+.pill-pending { background: color-mix(in srgb, var(--accent-gold) 22%, var(--bg-soft)); color: var(--accent-gold); }
+.pill-confirmed, .pill-paid { background: color-mix(in srgb, var(--accent-teal) 20%, var(--bg-soft)); color: var(--accent-teal); }
+.pill-cancelled, .pill-failed { background: color-mix(in srgb, var(--accent-primary) 20%, var(--bg-soft)); color: var(--accent-primary); }
+.pill-completed, .pill-refunded { background: var(--chip-bg); color: var(--text-secondary); }
+
+/* my bookings / host bookings */
+.booking-section { margin-bottom: 2.5rem; }
+.booking-section h3 { font-weight: 700; margin-bottom: 1rem; color: var(--text-primary); font-family: 'Playfair Display', serif; }
+
+.booking-row {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-elevated);
+    color: inherit;
+    text-decoration: none;
+    transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.booking-row:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: var(--accent-secondary);
+    color: inherit;
+}
+
+.booking-row img { width: 120px; height: 90px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+
+.booking-row-main { flex: 1; min-width: 0; }
+.booking-row-title { font-weight: 700; margin: 0 0 0.25rem; color: var(--text-primary); }
+.booking-row-meta { margin: 0; color: var(--text-muted); font-size: 0.95rem; }
+
+.booking-row-side { text-align: right; white-space: nowrap; }
+.booking-row-side .pill { margin-left: 0.25rem; }
+
+.empty-note { padding: 2rem; text-align: center; color: var(--text-muted); }
+
+@media (max-width: 575.98px) {
+    .booking-row { flex-wrap: wrap; }
+    .booking-row img { width: 100%; height: 160px; }
+    .booking-row-side { text-align: left; white-space: normal; width: 100%; }
+    .booking-row-side .pill { margin: 0 0.25rem 0 0; }
+}
+
+/* ===========================================================================
+   NEARBY POPULAR PLACES
+   Server-populated by controller/listing.js -> services/nearbyPlaces.js.
+   Always scoped with a "nearby-" prefix so nothing here collides with the
+   rest of the app's classes.
+   =========================================================================== */
+
+.nearby-section {
+    margin: 2.5rem 0 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.nearby-heading {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nearby-heading i { color: var(--accent-secondary); }
+
+.nearby-subtext {
+    color: var(--text-muted);
+    margin-bottom: 1.6rem;
+    max-width: 640px;
+}
+
+.nearby-category { margin-bottom: 2.2rem; }
+
+.nearby-category-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nearby-category-title.is-food i { color: var(--accent-primary); }
+.nearby-category-title.is-travel i { color: var(--accent-teal); }
+
+/* Horizontally scrollable row of cards — a deliberate "explore strip" feel,
+   distinct from the vertical listing grid used elsewhere on the site. */
+.nearby-grid {
+    display: flex;
+    gap: 1.1rem;
+    overflow-x: auto;
+    padding-bottom: 0.6rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-secondary) transparent;
+}
+
+.nearby-grid::-webkit-scrollbar { height: 6px; }
+.nearby-grid::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 999px; }
+.nearby-grid::-webkit-scrollbar-thumb:hover { background: var(--accent-secondary); }
+
+.nearby-card {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: 240px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.1rem 1.15rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.nearby-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-secondary);
+}
+
+.nearby-card-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.3;
+    /* clamp long names to two lines so the card row stays even */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.nearby-card-meta {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--accent-secondary);
+}
+
+.nearby-rating, .nearby-distance {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.nearby-badge {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0.15rem 0 0;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: var(--chip-bg);
+    color: var(--accent-primary);
+}
+
+.nearby-card-address {
+    margin: 0.2rem 0 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.nearby-card-link {
+    margin-top: 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    text-decoration: none;
+}
+
+.nearby-card-link:hover {
+    color: var(--accent-secondary);
+    text-decoration: underline;
+}
+
+@media (max-width: 575.98px) {
+    .nearby-card { width: 210px; }
+}

@@ -9,6 +9,10 @@ const user= require("./models/user.js");      //user model name
 
 const listings_routes = require("./routes/listings.js");
 const user_routes=require("./routes/users.js");
+const booking_routes=require("./routes/bookings.js");     //booking feature
+
+// NEW: homepage controller (controller/home.js). Nothing else here changed.
+const controller = require("./controller/home.js");
 
 const express= require('express');
 const path=require("path");
@@ -35,6 +39,10 @@ app.engine("ejs",ejsMate);
 
 app.set("views",path.join(__dirname,"views"));
 app.set("view engine","ejs");
+
+//helpers available inside every EJS view (amenity checklist, price/date formatting)
+app.locals.listingExtras = require("./utils/listingExtras.js");
+app.locals.bookingFormat = require("./utils/booking.js");
 
 app.use(express.static(path.join(__dirname,"public")));
 app.use(express.urlencoded({ extended: true }));
@@ -200,14 +208,22 @@ app.listen(port,()=>{
     console.log("server started !");
 })
 
-app.get("/",(req,res)=>
+app.get("/",async (req,res)=>
 {
-    res.send( "welcome home");
+    let states = await listing.distinct("state");
+    
+        // Guard against null/empty values and keep the list alphabetical.
+        states = states.filter(Boolean).sort();
+    res.render("home.ejs",{states});
 });
+
+// app.get("/", wrap_async(controller.home));
+ 
 
 //listings routes
 app.use("/listings",listings_routes);
 app.use("/", user_routes);
+app.use("/", booking_routes);     //bookings, checkout, host bookings
 
 
 

@@ -1,91 +1,41 @@
 <% layout('/layouts/boilerplate') %>
-  <body>
-    <div class="signup-container">
+<body>
+  <div class="signup-container">
     <div class="card signup-card mx-auto">
-        <div class="card-body">
+      <div class="card-body">
 
-            <!-- Heading -->
-            <div class="text-center mb-4">
-                <h2 class="fw-bold">Login</h2>
-               
-            </div>
-
-            
-
-              <!--  Form -->
-            <form  action="/login" method="POST">
-                <!-- username -->
-                <div class="mb-3">
-                    <label for="username" class="form-label">
-                        username
-                    </label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        name="username"
-                        placeholder="Enter your username"
-                        required
-                    >
-                </div>
-
-                <!-- Password -->
-                <div class="mb-3">
-                    <label for="password" class="form-label">
-                        Password
-                    </label>
-                    <input
-                        type="password"
-                        class="form-control"
-                        name="password"
-                        placeholder="Create a password"
-                        minlength="8"
-                        required
-                    >
-                </div>
-
-                
-
-               
-                <!-- Submit -->
-                <button
-                    type="submit"
-                    class="btn btn-primary btn-signup w-100"
-                >
-                    signin 
-                </button>
-
-            </form>
-             <!-- sign up-->
-            <p class="text-center text-muted mt-4 mb-0">
-                Do not have an account?
-                <a href="/signup" class="login-link">
-                    Signup
-                </a>
-            </p>
-             <!-- Divider -->
-            <div class="divider">
-                <span>OR</span>
-            </div>
-             <!-- Google Signup -->
-                <a href="/auth/google" class="btn google-btn w-100">
-                    <img
-                        src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                        alt="Google"
-                        class="google-icon"
-                    >
-                    Sign in with Google
-                </a>
-
-           
-           
-      
-
-
+        <div class="text-center mb-4">
+          <h2 class="fw-bold"><i class="fa-solid fa-gopuram me-2"></i>Welcome back</h2>
+          <p class="text-muted mb-0" style="color: var(--text-muted) !important;">Login to continue exploring stays</p>
         </div>
+
+        <form action="/login" method="POST">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" placeholder="Enter your username" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Enter your password" minlength="8" required>
+          </div>
+
+          <button type="submit" class="btn btn-signup w-100">Sign in</button>
+        </form>
+
+        <p class="text-center mt-4 mb-0" style="color: var(--text-muted);">
+          Don't have an account? <a href="/signup" class="login-link">Signup</a>
+        </p>
+
+        <div class="divider"><span>OR</span></div>
+
+        <a href="/auth/google" class="btn google-btn w-100">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
+          Sign in with Google
+        </a>
+
+      </div>
     </div>
-</div>
-
-
-     
-  </body>
+  </div>
+</body>
 </html>

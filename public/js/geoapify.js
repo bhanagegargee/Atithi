@@ -1,5 +1,4 @@
 
-
     // ---------------------------------------------------
     // DOM ELEMENTS
     // ---------------------------------------------------
@@ -30,8 +29,12 @@
 
 
     // ---------------------------------------------------
-    // MAP INITIALIZATION
+    // MAP INITIALIZATION (only runs on pages that have #map)
     // ---------------------------------------------------
+
+    const mapContainer = document.getElementById("map");
+
+    if (mapContainer) {
 
     const map = L.map("map").setView(
         [19.0760, 72.8777],
@@ -158,14 +161,14 @@
         // UI STATUS
         // ------------------------------------------------
 
-        statusBox.className =
-            "alert alert-info";
+        if (statusBox) {
+            statusBox.style.display = "flex";
+            statusBox.className = "flash-msg flash-info";
+            statusBox.innerText = "Getting exact address...";
+        }
 
-        statusBox.innerText =
-            "Getting exact address...";
 
-
-        saveButton.disabled = true;
+        if (saveButton) saveButton.disabled = true;
 
 
         // ------------------------------------------------
@@ -200,16 +203,11 @@
                 data.address || "";
 
 
-            selectedAddressInput.value =
-                address;
+            if (selectedAddressInput) selectedAddressInput.value = address;
 
+            if (locationInput) locationInput.value = address;
 
-            locationInput.value =
-                address;
-
-
-            countryInput.value =
-                data.country || "";
+            if (countryInput) countryInput.value = data.country || "";
 
 
             // --------------------------------------------
@@ -235,14 +233,14 @@
             // SUCCESS
             // --------------------------------------------
 
-            statusBox.className =
-                "alert alert-success";
+            if (statusBox) {
+                statusBox.className = "flash-msg flash-success";
+                statusBox.innerText =
+                    "Location selected successfully. You can drag the marker to adjust the exact property location.";
+            }
 
-            statusBox.innerText =
-                "Location selected successfully. You can drag the marker to adjust the exact property location.";
 
-
-            saveButton.disabled = false;
+            if (saveButton) saveButton.disabled = false;
 
 
         } catch (error) {
@@ -252,17 +250,16 @@
                 error
             );
 
+            if (statusBox) {
+                statusBox.className = "flash-msg flash-error";
+                statusBox.innerText =
+                    "Could not determine the address. Please select another location.";
+            }
 
-            statusBox.className =
-                "alert alert-danger";
-
-            statusBox.innerText =
-                "Could not determine the address. Please select another location.";
-
-
-            saveButton.disabled = true;
+            if (saveButton) saveButton.disabled = true;
 
         }
 
     }
 
+    }

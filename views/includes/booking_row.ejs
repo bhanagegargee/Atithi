@@ -1,0 +1,27 @@
+<%
+  // One booking in a list (my bookings / host bookings).
+  // Needs: b (booking), showGuest (true on the host page), todayStart
+  const snap = b.listingSnapshot || {};
+  const guestName = b.guest && b.guest.first_name ? (b.guest.first_name + " " + b.guest.last_name).trim() : "Guest";
+%>
+<a class="booking-row" href="/bookings/<%= b._id %>">
+  <% if (snap.imageUrl) { %><img src="<%= snap.imageUrl %>" alt=""><% } %>
+  <div class="booking-row-main">
+    <p class="booking-row-title"><%= snap.title || "Listing" %></p>
+    <% if (showGuest) { %><p class="booking-row-meta">Guest: <%= guestName %></p><% } %>
+    <p class="booking-row-meta">
+      <%= bookingFormat.formatDate(b.checkIn) %> &ndash; <%= bookingFormat.formatDate(b.checkOut) %>
+      (<%= bookingFormat.plural(b.nights, "night") %>)
+    </p>
+    <p class="booking-row-meta"><%= bookingFormat.plural(b.guests, "guest") %></p>
+    <p class="booking-row-meta">Ref <%= b.bookingRef %></p>
+  </div>
+  <div class="booking-row-side">
+    <p class="booking-row-title mb-2"><%= bookingFormat.formatINR(b.totalPrice) %></p>
+    <p class="booking-row-meta mb-1">Booking <span class="pill pill-<%= b.status %>"><%= bookingFormat.capitalize(b.status) %></span></p>
+    <p class="booking-row-meta mb-0">Payment <span class="pill pill-<%= b.paymentStatus %>"><%= bookingFormat.capitalize(b.paymentStatus) %></span></p>
+    <% if (b.status === "pending" && b.checkIn < todayStart) { %>
+      <p class="booking-row-meta mt-1 mb-0">Check-in date has passed</p>
+    <% } %>
+  </div>
+</a>

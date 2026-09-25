@@ -1,0 +1,30 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+<%
+  const sections = [
+    { key: "upcoming",  title: "Upcoming" },
+    { key: "pending",   title: "Awaiting payment" },
+    { key: "past",      title: "Past" },
+    { key: "cancelled", title: "Cancelled" },
+  ];
+%>
+<div class="booking-page">
+  <h2>Bookings for my listings</h2>
+
+  <% if (total === 0) { %>
+    <div class="empty-note">
+      <p>No one has booked your listings yet.</p>
+    </div>
+  <% } %>
+
+  <% for (const s of sections) { if (groups[s.key].length) { %>
+    <section class="booking-section">
+      <h3><%= s.title %></h3>
+      <% for (const b of groups[s.key]) { %>
+        <%- include("../includes/booking_row.ejs", { b, showGuest: true, todayStart }) %>
+      <% } %>
+    </section>
+  <% } } %>
+</div>
+</body>
+</html>

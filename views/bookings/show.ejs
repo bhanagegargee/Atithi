@@ -1,0 +1,55 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+<%
+  const canPay = isGuest && booking.status === "pending" && booking.paymentStatus === "pending" && booking.checkIn >= bookingFormat.startOfToday();
+%>
+<div class="booking-page">
+  <h2>Booking <%= booking.bookingRef %></h2>
+
+  <div class="row g-4">
+
+    <div class="col-lg-7">
+      <div class="booking-panel">
+        <div class="summary-line">
+          <span>Booking status</span>
+          <span class="pill pill-<%= booking.status %>"><%= bookingFormat.capitalize(booking.status) %></span>
+        </div>
+        <div class="summary-line">
+          <span>Payment status</span>
+          <span class="pill pill-<%= booking.paymentStatus %>"><%= bookingFormat.capitalize(booking.paymentStatus) %></span>
+        </div>
+        <% if (!isGuest && guestName) { %>
+        <div class="summary-line"><span>Guest</span><span><%= guestName %></span></div>
+        <% } %>
+        <div class="summary-line">
+          <span>Booked on</span>
+          <span><%= bookingFormat.formatDate(booking.createdAt) %></span>
+        </div>
+
+        <% if (booking.status === "pending") { %>
+          <p class="terms-note mt-3">
+            <% if (isGuest) { %>
+              This booking is waiting for payment. The dates are not reserved yet.
+            <% } else { %>
+              The guest has not completed payment, so these dates are not reserved.
+            <% } %>
+          </p>
+        <% } %>
+
+        <div class="d-flex gap-2 flex-wrap mt-3">
+          <% if (canPay) { %>
+            <a href="/bookings/<%= booking._id %>/checkout" class="btn add-btn">Continue to payment</a>
+          <% } %>
+          <a href="<%= isGuest ? '/bookings' : '/host/bookings' %>" class="btn btn-outline-dark">Back to bookings</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <%- include("../includes/booking_summary.ejs", { booking, hostName, rating }) %>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

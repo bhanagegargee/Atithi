@@ -1,0 +1,18 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+<div class="booking-page">
+  <div class="booking-panel mx-auto" style="max-width: 560px;">
+    <h2>Payment Gateway</h2>
+    <p>Payment integration will be connected here.</p>
+
+    <div class="summary-line"><span>Booking ID</span><strong><%= booking.bookingRef %></strong></div>
+    <div class="summary-line"><span>Amount</span><strong><%= bookingFormat.formatINR(booking.totalPrice) %></strong></div>
+    <div class="summary-line"><span>Payment Status</span><strong><%= bookingFormat.capitalize(booking.paymentStatus) %></strong></div>
+
+    <p class="terms-note mt-3">No payment has been taken and the booking is still pending.</p>
+
+    <a href="/bookings/<%= booking._id %>/checkout" class="btn btn-outline-dark">Back to booking</a>
+  </div>
+</div>
+</body>
+</html>

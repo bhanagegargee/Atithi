@@ -1,0 +1,78 @@
+<%
+  // Booking summary card (listing, dates, guests, cancellation policy, price breakdown).
+  // Used by bookings/checkout.ejs and bookings/show.ejs.
+  // Needs: booking, hostName (may be null), rating (null until reviews exist)
+  const snap = booking.listingSnapshot || {};
+  const money = bookingFormat.formatINR;
+  const policy = listingExtras.CANCELLATION_POLICIES[snap.cancellationPolicy];
+  const inTime = listingExtras.formatTime12(snap.checkInTime);
+  const outTime = listingExtras.formatTime12(snap.checkOutTime);
+%>
+<div class="summary-card">
+
+  <div class="summary-head">
+    <% if (snap.imageUrl) { %>
+      <img class="summary-img" src="<%= snap.imageUrl %>" alt="">
+    <% } %>
+    <div>
+      <p class="summary-title"><%= snap.title || "Listing" %></p>
+      <% if (snap.state) { %><p class="summary-meta"><%= snap.state %></p><% } %>
+      <p class="summary-meta">
+        <% if (rating) { %>
+          <i class="fa-solid fa-star" aria-hidden="true"></i> <%= rating.average %> (<%= rating.count %> review<%= rating.count === 1 ? "" : "s" %>)
+        <% } else { %>
+          No reviews yet
+        <% } %>
+      </p>
+      <% if (hostName) { %><p class="summary-meta">Hosted by <%= hostName %></p><% } %>
+    </div>
+  </div>
+
+  <div class="summary-block">
+    <h4>Cancellation policy</h4>
+    <% if (policy) { %>
+      <p class="mb-0"><strong><%= policy.label %>.</strong> <%= policy.description %></p>
+    <% } else { %>
+      <p class="mb-0">The host hasn't specified a cancellation policy.</p>
+    <% } %>
+  </div>
+
+  <div class="summary-block">
+    <h4>Your trip</h4>
+    <div class="summary-line">
+      <span>Dates</span>
+      <span><%= bookingFormat.formatDate(booking.checkIn) %> &ndash; <%= bookingFormat.formatDate(booking.checkOut) %></span>
+    </div>
+    <div class="summary-line">
+      <span>Guests</span>
+      <span><%= bookingFormat.plural(booking.guests, "guest") %></span>
+    </div>
+    <% if (inTime) { %>
+    <div class="summary-line"><span>Check-in time</span><span><%= inTime %></span></div>
+    <% } %>
+    <% if (outTime) { %>
+    <div class="summary-line"><span>Check-out time</span><span><%= outTime %></span></div>
+    <% } %>
+  </div>
+
+  <div class="summary-block">
+    <h4>Price details</h4>
+    <div class="summary-line">
+      <span><%= bookingFormat.plural(booking.nights, "night") %> &times; <%= bookingFormat.formatINRShort(booking.pricePerNight) %></span>
+      <span><%= money(booking.subtotal) %></span>
+    </div>
+    <div class="summary-line">
+      <span>Taxes</span>
+      <span><%= money(booking.taxes) %></span>
+    </div>
+    <div class="summary-line">
+      <span>Service fee</span>
+      <span><%= money(booking.serviceFee) %></span>
+    </div>
+    <div class="summary-line summary-line-total">
+      <span>Total (<%= booking.currency || "INR" %>)</span>
+      <span><%= money(booking.totalPrice) %></span>
+    </div>
+  </div>
+
+</div>

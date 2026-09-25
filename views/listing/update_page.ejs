@@ -1,73 +1,52 @@
 <% layout('/layouts/boilerplate') %>
 <body>
-    
+  <div class="form-shell">
+    <h2><i class="fa-solid fa-pen me-2"></i>Update listing</h2>
 
-    <div class="row ">
-        <div class="col-8 offset-2" >
-            <form action="/listings/<%= update_listing._id %>?_method=PUT" method="POST" novalidate  class="needs-validation" enctype="multipart/form-data">
+    <form action="/listings/<%= update_listing._id %>?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
 
-                <div class="mb-3">
-                    <label for="title" class="form-label">title</label>
-                    <input type="text" placeholder="title" value="<%= update_listing.title %>"  name="listing[title]" class="form-control" required>
-                                <div class="invalid-feedback">
-                        Please enter title 
-                        </div>
-                </div>
-        
-                <div class="mb-3">
-                    <label for="description" class="form-label">description</label>
-                    <!-- <input type="text" placeholder="description" name="listing[description]" class="form-control" > -->
-                    <input type="text" placeholder="description" value="<%= update_listing.description %>"  name="listing[description]" class="form-control" required>
-                            <div class="invalid-feedback">
-                        Please enter description 
-                    </div>        
-                </div>
-            
-                <div class="mb-3">
-                    <label for="image" class="form-label">upload new image</label>
-                    <input type="file" placeholder="image"  name="listing[image]" class="form-control" >
-                     
-                 </div>
-        
-                <div class="row">
-                    <div class="mb-3 col-md-4">
-                        <label for="price" class="form-label">price</label>
-                        <input type="number" placeholder="price" value="<%= update_listing.price %>" name="listing[price]" class="form-control" required>
-                            <div class="invalid-feedback">
-                                Please enter price 
-                            </div>        
-                    </div>
-        
-                    <div class="mb-3 col-md-8">
-                                    <label for="location" class="form-label">location</label>
-                                    <input type="text" placeholder="location" value="<%= update_listing.location %>" name="listing[location]" class="form-control" required>
-                                        <div class="invalid-feedback">
-                                    Please enter location 
-                                </div>                    
-                    
-                    </div>
-                 </div>
-        
-       
-                    <div class="mb-3">
-                        <label for="country" class="form-label">country</label>
-                        <input type="text" placeholder="country" value="<%= update_listing.country %>" name="listing[country]" class="form-control" required>
-                                    <div class="invalid-feedback">
-                                    Please enter country 
-                                </div>  
-                    </div>
-       
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" placeholder="title" value="<%= update_listing.title %>" name="listing[title]" class="form-control" required>
+        <div class="invalid-feedback">Please enter title.</div>
+      </div>
 
-                    <div class="mb-3">
-                        <button class="btn edit-btn">save</button>
-                    </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <input type="text" placeholder="description" value="<%= update_listing.description %>" name="listing[description]" class="form-control" required>
+        <div class="invalid-feedback">Please enter description.</div>
+      </div>
 
-               
-            </form>
+      <div class="mb-3">
+        <label for="image" class="form-label">Upload new image</label>
+        <input type="file" placeholder="image" name="listing[image]" class="form-control">
+      </div>
+
+      <div class="row">
+        <div class="mb-3 col-md-4">
+          <label for="price" class="form-label">Price</label>
+          <input type="number" placeholder="price" value="<%= update_listing.price %>" name="listing[price]" class="form-control" min="0" required>
+          <div class="invalid-feedback">Please enter price.</div>
         </div>
-    </div>
-    
+
+        <div class="mb-3 col-md-8">
+          <label for="location" class="form-label">Location</label>
+          <input type="text" placeholder="location" value="<%= update_listing.location %>" name="listing[location]" class="form-control" required>
+          <div class="invalid-feedback">Please enter location.</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+        <input type="text" placeholder="country" value="<%= update_listing.country %>" name="listing[country]" class="form-control" required>
+        <div class="invalid-feedback">Please enter country.</div>
+      </div>
+
+      <div class="mb-3">
+        <button class="btn edit-btn"><i class="fa-solid fa-check me-1"></i> Save changes</button>
+      </div>
+
+    </form>
+  </div>
 </body>
 </html>
-
-

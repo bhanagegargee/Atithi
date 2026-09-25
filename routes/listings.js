@@ -10,6 +10,10 @@ const multer = require('multer');
 const upload = multer({ storage });
 
 const controller = require("../controller/listing.js");
+
+
+const booking_controller = require("../controller/booking.js");
+
 console.log(
     "Geoapify key loaded:",
     process.env.GEOAPIFY_API_KEY ? "YES" : "NO"
@@ -28,6 +32,8 @@ router.get("/new",isLogin ,wrap_async(async(req,res)=>{
         geoapifyApiKey: process.env.GEOAPIFY_API_KEY
     });
 }));
+
+
 
 //reverse geocoding
 router.get("/reverse-geocode", isLogin, wrap_async(controller.reverse_geo));
@@ -59,6 +65,15 @@ router.route("/:id")
 //update an existing listing 
 router.get("/:id/edit",isLogin ,wrap_async (controller.update_route));
 router.put("/:id",isLogin,upload.single("listing[image]"),wrap_async (controller.update_record));
+
+
+// ---- booking feature -------------------------------------------------------
+
+// availability of one listing (public, returns date ranges only)
+router.get("/:id/availability", wrap_async(booking_controller.get_availability));
+
+// where a logged-out visitor is sent back to after "Book Now" + login
+router.get("/:id/book", isLogin, wrap_async(booking_controller.resume_booking));
 
 
 

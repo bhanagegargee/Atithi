@@ -1,7 +1,22 @@
 <% layout('/layouts/boilerplate') %>
+<%
+  // ---- booking feature: values used by the amenities list and reservation card ----
+  // (old listings have no amenities / extras, so everything is defensive)
+  const AMENITY_PREVIEW = 10;                       // how many amenities are visible before "Show all"
+  const amenities = listingExtras.sortAmenities(one_listing.amenities);
+  const facts = listingExtras.listingFacts(one_listing);
+  const policy = listingExtras.CANCELLATION_POLICIES[one_listing.cancellationPolicy];
+  const inTime = listingExtras.formatTime12(one_listing.checkInTime);
+  const outTime = listingExtras.formatTime12(one_listing.checkOutTime);
+  const rsv = (typeof reservation !== "undefined" && reservation) ? reservation
+      : { maxGuests: 4, maxNights: 30, prefill: { checkIn: null, checkOut: null, guests: 1 } };
+  const hasPrice = one_listing.price != null && Number(one_listing.price) > 0;
+  const viewerIsOwner = !!(current_user && one_listing.owner && one_listing.owner.equals(current_user._id));
+%>
 <body>
     
-
+<div class="row">
+<div class="col-lg-8">
 
  <div class="card show-card">
     <img
@@ -50,6 +65,35 @@
             </a>
 
         <% } %>
+ <% if (inTime || outTime || policy) { %>
+        <ul class="show-rules">
+            <% if (inTime) { %><li><strong>Check-in:</strong> <%= inTime %></li><% } %>
+            <% if (outTime) { %><li><strong>Check-out:</strong> <%= outTime %></li><% } %>
+            <% if (policy) { %><li><strong>Cancellation:</strong> <%= policy.label %>. <%= policy.description %></li><% } %>
+        </ul>
+        <% } %>
+
+        <% if (amenities.length) { %>
+        <hr>
+        <section class="show-amenities" aria-labelledby="amenities-heading">
+            <h4 id="amenities-heading" class="mb-3">What this place offers</h4>
+            <ul class="amenity-list" id="amenity-list">
+                <% amenities.forEach(function (name, i) { %>
+                <li class="amenity-item<%= i >= AMENITY_PREVIEW ? ' is-extra' : '' %>"<%= i >= AMENITY_PREVIEW ? ' hidden' : '' %>>
+                    <i class="fa-solid <%= listingExtras.amenityIcon(name) %>" aria-hidden="true"></i>
+                    <span><%= name %></span>
+                </li>
+                <% }); %>
+            </ul>
+            <% if (amenities.length > AMENITY_PREVIEW) { %>
+            <button type="button" class="btn btn-outline-dark mt-3" id="amenity-toggle"
+                    aria-expanded="false" aria-controls="amenity-list"
+                    data-total="<%= amenities.length %>">
+                Show all <%= amenities.length %> amenities
+            </button>
+            <% } %>
+        </section>
+        <% } %>
 
         <% if(current_user && one_listing.owner.equals(current_user._id)) {%>
         <div class="show-btn-group">
@@ -65,6 +109,102 @@
         </div>
         <% } %>
     </div>
+ </div>
+
+</div>
+
+<!-- ============================ reservation card ============================ -->
+<div class="col-lg-4">
+<aside class="reservation-card" id="reservation" aria-label="Reserve this place"
+       data-listing-id="<%= one_listing._id %>"
+       data-price="<%= hasPrice ? one_listing.price : '' %>"
+       data-max-guests="<%= rsv.maxGuests %>"
+       data-max-nights="<%= rsv.maxNights %>"
+       data-authenticated="<%= current_user ? 'true' : 'false' %>"
+       data-availability-url="/listings/<%= one_listing._id %>/availability"
+       data-book-url="/listings/<%= one_listing._id %>/book"
+       data-prefill="<%= JSON.stringify(rsv.prefill) %>">
+
+    <% if (hasPrice) { %>
+    <p class="res-price">
+        <span class="res-price-amount"><%= bookingFormat.formatINRShort(one_listing.price) %></span>
+        <span class="res-price-unit">/ night</span>
+    </p>
+    <% } else { %>
+    <p class="res-price"><span class="res-price-unit">Price not available</span></p>
+    <% } %>
+
+    <% if (viewerIsOwner) { %>
+        <p class="res-note">This is your listing, so it can't be booked from this account.</p>
+        <a href="/host/bookings" class="btn btn-outline-dark w-100">View bookings for your listings</a>
+    <% } else if (!hasPrice) { %>
+        <p class="res-note">This listing can't be booked until the host sets a price.</p>
+    <% } else { %>
+
+    <form id="reservation-form" method="POST" action="/bookings" novalidate>
+        <input type="hidden" name="listingId" value="<%= one_listing._id %>">
+        <input type="hidden" name="checkIn" id="res-checkin-value">
+        <input type="hidden" name="checkOut" id="res-checkout-value">
+
+        <div class="res-fields">
+            <button type="button" class="res-field res-field-in" id="res-checkin-btn"
+                    aria-haspopup="dialog" aria-expanded="false" aria-controls="res-calendar" disabled>
+                <span class="res-label">Check-in</span>
+                <span class="res-value" id="res-checkin-text">Add date</span>
+            </button>
+            <button type="button" class="res-field res-field-out" id="res-checkout-btn"
+                    aria-haspopup="dialog" aria-expanded="false" aria-controls="res-calendar" disabled>
+                <span class="res-label">Checkout</span>
+                <span class="res-value" id="res-checkout-text">Add date</span>
+            </button>
+            <div class="res-field res-field-guests">
+                <label for="res-guests" class="res-label">Guests</label>
+                <select id="res-guests" name="guests" class="res-select">
+                    <% for (let g = 1; g <= rsv.maxGuests; g++) { %>
+                    <option value="<%= g %>" <%= Number(rsv.prefill.guests) === g ? 'selected' : '' %>><%= g %> guest<%= g === 1 ? '' : 's' %></option>
+                    <% } %>
+                </select>
+            </div>
+        </div>
+
+        <div class="res-calendar" id="res-calendar" role="dialog" aria-label="Choose your dates" hidden>
+            <div class="cal-head">
+                <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month">
+                    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                </button>
+                <div class="cal-title" id="cal-title" aria-live="polite"></div>
+                <button type="button" class="cal-nav" id="cal-next" aria-label="Next month">
+                    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="cal-weekdays" aria-hidden="true">
+                <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+            </div>
+            <div class="cal-grid" id="cal-grid"></div>
+            <div class="cal-foot">
+                <span class="cal-hint" id="cal-hint"></span>
+                <button type="button" class="cal-clear" id="cal-clear">Clear dates</button>
+            </div>
+            <p class="cal-legend">Struck-through dates are already booked.</p>
+        </div>
+
+        <p class="res-status" id="res-status" role="status" aria-live="polite">Checking availability...</p>
+
+        <button type="submit" class="btn add-btn w-100 res-submit" id="res-submit" disabled>Book Now</button>
+        <p class="res-note res-note-center">You won't be charged yet</p>
+
+        <div class="res-summary" id="res-summary" hidden>
+            <div class="res-summary-row">
+                <span id="res-summary-label"></span>
+                <span id="res-summary-amount"></span>
+            </div>
+            <p class="res-note">Taxes and the service fee are added at checkout.</p>
+        </div>
+    </form>
+
+    <% } %>
+</aside>
+</div>
 </div>
 
 <!-- ===================================================================
@@ -184,6 +324,26 @@
 </div>
 
 <% } %>
+
+
+
+<script>
+// "Show all X amenities" (expandable, no library needed)
+(function () {
+    var btn = document.getElementById("amenity-toggle");
+    var list = document.getElementById("amenity-list");
+    if (!btn || !list) return;
+    btn.addEventListener("click", function () {
+        var open = btn.getAttribute("aria-expanded") === "true";
+        var extras = list.querySelectorAll(".is-extra");
+        for (var i = 0; i < extras.length; i++) extras[i].hidden = open;
+        btn.setAttribute("aria-expanded", open ? "false" : "true");
+        btn.textContent = open ? "Show all " + btn.getAttribute("data-total") + " amenities" : "Show fewer";
+    });
+})();
+</script>
+<script src="/js/reservation.js"></script>
+
 
 </body>
 </html>

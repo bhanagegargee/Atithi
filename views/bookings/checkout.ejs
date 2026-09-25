@@ -1,0 +1,55 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+<%
+  const blocked = datesTaken || expired;
+%>
+<div class="booking-page">
+  <h2>Checkout</h2>
+
+  <div class="row g-4">
+
+    <!-- left: payment step -->
+    <div class="col-lg-7 order-2 order-lg-1">
+      <div class="booking-panel">
+        <h3 class="mb-3">Proceed to payment</h3>
+        <p>You'll be directed to the payment gateway to complete payment.</p>
+
+        <% if (datesTaken) { %>
+          <div class="booking-alert" role="alert">
+            <%= conflictMessage %>
+            <a href="/listings/<%= booking.listing %>">Choose different dates</a>
+          </div>
+        <% } else if (expired) { %>
+          <div class="booking-alert" role="alert">
+            The check-in date has passed.
+            <a href="/listings/<%= booking.listing %>">Choose new dates</a>
+          </div>
+        <% } %>
+
+        <p class="terms-note">By selecting the button, I agree to the booking terms.</p>
+
+        <form action="/bookings/<%= booking._id %>/pay" method="POST">
+          <button type="submit" class="btn add-btn pay-btn" <%= blocked ? "disabled" : "" %>>Pay Now</button>
+        </form>
+
+        <hr>
+        <p class="terms-note mb-2">
+          Booking <span class="pill pill-<%= booking.status %>"><%= bookingFormat.capitalize(booking.status) %></span>
+          Payment <span class="pill pill-<%= booking.paymentStatus %>"><%= bookingFormat.capitalize(booking.paymentStatus) %></span>
+        </p>
+        <p class="terms-note mb-0">
+          Your dates are not reserved until payment is completed.
+          <a href="/listings/<%= booking.listing %>">Change dates</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- right: what you are paying for -->
+    <div class="col-lg-5 order-1 order-lg-2">
+      <%- include("../includes/booking_summary.ejs", { booking, hostName, rating }) %>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

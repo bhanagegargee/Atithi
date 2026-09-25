@@ -1,0 +1,83 @@
+<%
+  // Shared by views/listing/new.ejs and views/listing/update_page.ejs
+  // `data` is the existing listing (edit) or {} (new). Every field is optional.
+  const d = data || {};
+  const chosen = new Set(Array.isArray(d.amenities) ? d.amenities : []);
+  const policies = listingExtras.CANCELLATION_POLICIES;
+  const val = (v) => (v === undefined || v === null ? "" : v);
+%>
+<div class="listing-extras">
+
+  <h5 class="extras-heading">Property details <span class="extras-optional">(optional)</span></h5>
+
+  <div class="row g-3 mb-3">
+    <div class="col-6 col-md-3">
+      <label for="maxGuests" class="form-label">Maximum guests</label>
+      <input type="number" id="maxGuests" name="listing[maxGuests]" class="form-control" min="1" max="50" step="1" value="<%= val(d.maxGuests) %>" placeholder="4">
+    </div>
+    <div class="col-6 col-md-3">
+      <label for="bedrooms" class="form-label">Bedrooms</label>
+      <input type="number" id="bedrooms" name="listing[bedrooms]" class="form-control" min="0" max="50" step="1" value="<%= val(d.bedrooms) %>" placeholder="2">
+    </div>
+    <div class="col-6 col-md-3">
+      <label for="beds" class="form-label">Beds</label>
+      <input type="number" id="beds" name="listing[beds]" class="form-control" min="0" max="100" step="1" value="<%= val(d.beds) %>" placeholder="3">
+    </div>
+    <div class="col-6 col-md-3">
+      <label for="bathrooms" class="form-label">Bathrooms</label>
+      <input type="number" id="bathrooms" name="listing[bathrooms]" class="form-control" min="0" max="50" step="0.5" value="<%= val(d.bathrooms) %>" placeholder="2">
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-6">
+      <label for="checkInTime" class="form-label">Check-in time</label>
+      <input type="time" id="checkInTime" name="listing[checkInTime]" class="form-control" value="<%= val(d.checkInTime) %>">
+    </div>
+    <div class="col-6">
+      <label for="checkOutTime" class="form-label">Check-out time</label>
+      <input type="time" id="checkOutTime" name="listing[checkOutTime]" class="form-control" value="<%= val(d.checkOutTime) %>">
+    </div>
+  </div>
+
+  <fieldset class="mb-4">
+    <legend class="form-label extras-legend">Cancellation policy</legend>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="listing[cancellationPolicy]" id="policy-none" value="" <%= !d.cancellationPolicy ? "checked" : "" %>>
+      <label class="form-check-label" for="policy-none">Not specified</label>
+    </div>
+    <% for (const key of Object.keys(policies)) { %>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="listing[cancellationPolicy]" id="policy-<%= key %>" value="<%= key %>" <%= d.cancellationPolicy === key ? "checked" : "" %>>
+        <label class="form-check-label" for="policy-<%= key %>">
+          <%= policies[key].label %> <span class="extras-hint">- <%= policies[key].description %></span>
+        </label>
+      </div>
+    <% } %>
+  </fieldset>
+
+  <h5 class="extras-heading">What this place offers</h5>
+  <p class="extras-hint mb-3">Select the amenities available at your property. You can select none, one or many.</p>
+
+  <%# Always sent, so that unticking every box on the edit form clears the list. Blank values are ignored by the server. %>
+  <input type="hidden" name="listing[amenities]" value="">
+
+  <% for (const group of listingExtras.AMENITY_GROUPS) { %>
+    <fieldset class="amenity-group">
+      <legend class="extras-legend"><%= group.title %></legend>
+      <div class="amenity-grid">
+        <% for (const name of group.items) {
+             const id = "amenity-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-"); %>
+          <div class="amenity-option">
+            <input class="form-check-input" type="checkbox" name="listing[amenities]" id="<%= id %>" value="<%= name %>" <%= chosen.has(name) ? "checked" : "" %>>
+            <label class="amenity-label" for="<%= id %>">
+              <i class="fa-solid <%= listingExtras.amenityIcon(name) %>" aria-hidden="true"></i>
+              <span><%= name %></span>
+            </label>
+          </div>
+        <% } %>
+      </div>
+    </fieldset>
+  <% } %>
+
+</div>
